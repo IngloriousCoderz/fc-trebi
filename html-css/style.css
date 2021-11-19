@@ -1,0 +1,50 @@
+html,
+body {
+  height: 100vh;
+}
+
+html {
+  font-size: 20px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--default-bg);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "aside main"
+    "footer footer";
+}
+
+body > * {
+  padding: 1rem;
+}
+
+header {
+  grid-area: header;
+}
+
+aside {
+  grid-area: aside;
+  background-color: cornflowerblue;
+}
+
+aside > nav > ul {
+  list-style-type: none;
+}
+
+aside a {
+  text-decoration: none;
+}
+
+main {
+  grid-area: main;
+  background-color: lightsalmon;
+}
+
+footer {
+  grid-area: footer;
+}
