@@ -1,33 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import AppComponent from './app'
 
+import * as api from './services/api'
+
 function App({ name }) {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: 'Learn React', completed: true },
-    { id: 2, text: 'Look for a job', completed: false },
-    { id: 3, text: 'Forget everything' },
-  ])
+  const [tasks, setTasks] = useState([])
 
-  const handleSubmit = (text) => {
-    setTasks(addTask(tasks, text))
+  useEffect(() => {
+    fetchTasks()
+  }, [])
+
+  const fetchTasks = async () => {
+    const tasks = await api.fetchTasks()
+    setTasks(tasks)
   }
 
-  const addTask = (tasks, text) => {
-    const maxId = tasks.length ? tasks[tasks.length - 1].id : 0
-    return [...tasks, { id: maxId + 1, text }]
+  const handleSubmit = async (text) => {
+    const task = await api.addTask({ text })
+    setTasks([...tasks, task])
+    // fetchTasks()
   }
 
-  const handleSpanClick = (id) => (event) => {
+  const handleSpanClick = (id) => async (event) => {
+    const { completed } = tasks.find((task) => task.id === id)
+
+    await api.updateTask(id, { completed: !completed })
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     )
+    // fetchTasks()
   }
 
-  const handleButtonClick = (id) => (event) => {
+  const handleButtonClick = (id) => async (event) => {
+    await api.deleteTask(id)
     setTasks(tasks.filter((task) => task.id !== id))
+    // fetchTasks()
   }
 
   return (
