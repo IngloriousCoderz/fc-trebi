@@ -1,4 +1,5 @@
 import {
+  ON_TASKS_UPDATED,
   ON_TASK_ADDED,
   ON_TASK_REMOVED,
   ON_TASK_TOGGLED,
@@ -8,9 +9,11 @@ export default function tasks(state = [], action) {
   const { type, payload } = action
 
   switch (type) {
+    case ON_TASKS_UPDATED:
+      return payload
+
     case ON_TASK_ADDED:
-      const maxId = state.length ? state[state.length - 1].id : 0
-      return [...state, { id: maxId + 1, text: payload }]
+      return [...state, payload]
 
     case ON_TASK_REMOVED:
       return state.filter((task) => task.id !== payload)

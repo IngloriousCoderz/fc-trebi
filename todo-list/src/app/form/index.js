@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 
-import { onTextUpdated, onTaskAdded, selectText } from '../root-reducer'
+import { onTextUpdated, selectText, onTaskAddedRemotely } from '../root-reducer'
 import FormComponent from './form'
 
 // container component
@@ -15,7 +15,7 @@ function Form() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    dispatch(onTaskAdded(text))
+    dispatch(onTaskAddedRemotely(text))
   }
 
   return (

@@ -1,18 +1,28 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { onTaskRemoved, onTaskToggled, selectTasks } from '../root-reducer'
+import {
+  selectTasks,
+  fetchTasks,
+  onTaskRemovedRemotely,
+  onTaskToggledRemotely,
+} from '../root-reducer'
 import ListComponent from './list'
 
 function List() {
   const tasks = useSelector(selectTasks)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(fetchTasks())
+  }, [dispatch])
+
   const handleSpanClick = (id) => (event) => {
-    dispatch(onTaskToggled(id))
+    dispatch(onTaskToggledRemotely(id))
   }
 
   const handleButtonClick = (id) => (event) => {
-    dispatch(onTaskRemoved(id))
+    dispatch(onTaskRemovedRemotely(id))
   }
 
   return (
