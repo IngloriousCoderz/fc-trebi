@@ -27,6 +27,16 @@ export const onTaskToggled = (id) => ({ type: ON_TASK_TOGGLED, payload: id })
 
 // thunks
 
+export const openConnection = () => async (dispatch) => {
+  const socket = new WebSocket('ws://localhost:3002')
+  socket.addEventListener('open', () => {
+    console.log('WebSocket to localhost:3002 opened.')
+  })
+  socket.addEventListener('message', (event) => {
+    dispatch(onTasksUpdated(JSON.parse(event.data)))
+  })
+}
+
 export const fetchTasks = () => async (dispatch) => {
   const tasks = await api.fetchTasks()
   dispatch(onTasksUpdated(tasks))
@@ -34,19 +44,20 @@ export const fetchTasks = () => async (dispatch) => {
 
 export const onTaskAddedRemotely = (text) => async (dispatch) => {
   const task = await api.addTask({ text })
-  dispatch(onTaskAdded(task))
+  dispatch(onTextUpdated(''))
+  // dispatch(onTaskAdded(task))
 }
 
 export const onTaskRemovedRemotely = (id) => async (dispatch) => {
   await api.deleteTask(id)
-  dispatch(onTaskRemoved(id))
+  // dispatch(onTaskRemoved(id))
 }
 
 export const onTaskToggledRemotely = (id) => async (dispatch, getState) => {
   const tasks = selectTasks(getState())
   const { completed } = tasks.find((task) => task.id === id)
   await api.updateTask(id, { completed: !completed })
-  dispatch(onTaskToggled(id))
+  // dispatch(onTaskToggled(id))
 }
 
 // root reducer
