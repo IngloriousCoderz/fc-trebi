@@ -10,12 +10,12 @@ export async function fetchTasks() {
 }
 
 export async function addTask(body) {
-  const { data } = await http.post('tasks', body)
+  const { data } = await http.post('tasks', { data: body })
   return data
 }
 
 export async function updateTask(id, body) {
-  const { data } = await http.patch(`tasks/${id}`, body)
+  const { data } = await http.put(`tasks/${id}`, { data: body })
   return data
 }
 
