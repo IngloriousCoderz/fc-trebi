@@ -8,54 +8,54 @@ const { Server } = require('ws')
 let socket = null
 
 const pushServer = new Server({ port: process.env.SOCKET_PORT || 3002 })
-pushServer.on('connection', (s) => {
+pushServer.on('connection', async (s) => {
   socket = s
   debug('Socket server sending initial data')
-  const tasks = db.find()
+  const tasks = await db.find()
   socket.send(JSON.stringify(tasks))
 })
 
-router.get('/', (req, res) => {
-  const tasks = db.find()
-  socket?.send(JSON.stringify(db.find()))
+router.get('/', async (req, res) => {
+  const tasks = await db.find()
+  socket?.send(JSON.stringify(tasks))
   res.send(tasks)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const tasks = db.find()
-  const task = db.findOne(id)
+  const tasks = await db.find()
+  const task = await db.findOne(id)
   socket?.send(JSON.stringify(tasks))
   res.send(task)
 })
 
-router.post('/', (req, res) => {
-  const task = db.create(req.body)
-  const tasks = db.find()
+router.post('/', async (req, res) => {
+  const task = await db.create(req.body)
+  const tasks = await db.find()
   socket?.send(JSON.stringify(tasks))
   res.send(task)
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const task = db.replace(id, req.body)
-  const tasks = db.find()
+  const task = await db.replace(id, req.body)
+  const tasks = await db.find()
   socket?.send(JSON.stringify(tasks))
   res.send(task)
 })
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const task = db.update(id, req.body)
-  const tasks = db.find()
+  const task = await db.update(id, req.body)
+  const tasks = await db.find()
   socket?.send(JSON.stringify(tasks))
   res.send(task)
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const task = db.delete(id)
-  const tasks = db.find()
+  const task = await db.delete(id)
+  const tasks = await db.find()
   socket?.send(JSON.stringify(tasks))
   res.send(task)
 })
