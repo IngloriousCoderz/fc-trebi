@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import {
   selectTasks,
-  fetchTasks,
   onTaskRemovedRemotely,
   onTaskToggledRemotely,
+  openConnection,
 } from '../root-reducer'
 import ListComponent from './list'
 
@@ -14,7 +14,8 @@ function List() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchTasks())
+    // dispatch(fetchTasks())
+    dispatch(openConnection())
   }, [dispatch])
 
   const handleSpanClick = (id) => (event) => {
