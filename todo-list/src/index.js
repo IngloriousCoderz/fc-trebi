@@ -10,7 +10,7 @@ const HOST = 'http://localhost:3001/robot'
 
 const http = axios.create({ baseURL: HOST })
 
-//fetchData()
+fetchData()
 createBackup()
 
 async function fetchData() {
