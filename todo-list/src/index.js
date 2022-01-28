@@ -10,8 +10,23 @@ const HOST = 'http://localhost:3001/robot'
 
 const http = axios.create({ baseURL: HOST })
 
-fetchData()
-createBackup()
+const socket = new WebSocket('ws://localhost:3002')
+socket.addEventListener('open', () => {
+  console.log('WebSocket to localhost:3002 opened.')
+})
+socket.addEventListener('message', (event) => {
+  console.log(event.data)
+})
+
+// fetchData()
+//isBackupInProgress()
+//createBackup()
+//getDevices()
+//copyDirectory()
+//getIOSignal('DI034')
+//getIOSignal('DI037')
+subscribeToSignal('DO097')
+//subscribeToSignal('DI037')
 
 async function fetchData() {
   const { data } = await http.get('users')
@@ -29,9 +44,11 @@ async function createBackup() {
     )}`,
   })
 
-  const { location } = data.headers
+  subscribe(data.location)
 
-  subscribe(location)
+  setTimeout(() => {
+    isBackupInProgress()
+  }, 1000)
 }
 
 async function subscribe(location) {
@@ -41,17 +58,7 @@ async function subscribe(location) {
     '1-p': 0,
   })
 
-  const result = await parse(data.data)
-  const socketUrl = result.body[0].div[0].a[1].$.href
-
-  const socket = new WebSocket(socketUrl)
-  socket.addEventListener('open', () => {
-    console.log(`WebSocket to ${socketUrl} opened.`)
-  })
-  socket.addEventListener('message', (event) => {
-    const message = JSON.parse(event.data)
-    console.log(message)
-  })
+  console.log(data.message)
 }
 
 async function isBackupInProgress() {
@@ -60,6 +67,44 @@ async function isBackupInProgress() {
   const output = await parse(data)
 
   console.log(output)
+}
+
+async function getDevices() {
+  const { data } = await http.get('fileservice')
+
+  console.log(data)
+}
+
+async function copyDirectory() {
+  //const PATH = 'fileservice/$home/copy-me'
+  const PATH = 'fileservice/C/Progetti/copy-me'
+  const { data } = await http.post(PATH, {
+    'fs-overwrite': false,
+    'fs-newname': 'copied-dir',
+    'fs-action': 'copy',
+  })
+
+  console.log(data)
+}
+
+async function getIOSignal(name) {
+  const { data } = await http.get(
+    `rw/iosystem/signals/PROFINET/PN_Internal_Device/${name}`
+  )
+
+  const output = await parse(data)
+
+  console.log(name, ':', output.body[0].div[0].ul[0].li[0].span[7]._)
+}
+
+async function subscribeToSignal(name) {
+  const { data } = await http.post('subscription', {
+    resources: 1,
+    1: `/rw/iosystem/signals/PROFINET/PN_Internal_Device/${name};state`,
+    '1-p': 0,
+  })
+
+  console.log(data.message)
 }
 
 function parse(xml) {

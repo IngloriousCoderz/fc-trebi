@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set DEBUG=server:* & nodemon ./bin/www"
+    "dev": "set DEBUG=server:* & nodemon ./bin/www",
+    "start": "set DEBUG=server:* & node ./bin/www"
   },
   "dependencies": {
     "axios-digest": "^0.3.0",
@@ -11,9 +12,12 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "ftp": "^0.3.10",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "websocket": "^1.0.34",
+    "xml2js": "^0.4.23"
   }
 }
