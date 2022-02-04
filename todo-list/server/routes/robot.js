@@ -1,7 +1,7 @@
 const { parseString } = require('xml2js')
 const express = require('express')
 const router = express.Router()
-const createWSClient = require('./ws-client')
+const createWSClient = require('./ws')
 const { http, host } = require('./rest-client')
 require('./ftp-client')
 
@@ -43,11 +43,8 @@ router.post('/subscription', async (req, res) => {
   const result = await parse(data)
   const socketUrl = result.body[0].div[0].a[1].$.href
 
-  console.log(headers)
-
-  createWSClient(socketUrl, headers)
-
-  res.send({ message: 'Subscription initiated.' })
+  console.log(socketUrl, headers)
+  //createWSClient(socketUrl, headers)
 })
 
 router.post('/*', async (req, res) => {

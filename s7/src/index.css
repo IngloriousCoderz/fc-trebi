@@ -1,0 +1,30 @@
+html,
+body,
+#root,
+.container {
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+th,
+td {
+  width: 50%;
+  vertical-align: middle;
+}
+
+th > *,
+td > * {
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+input[type="number"] {
+  text-align: right;
+}

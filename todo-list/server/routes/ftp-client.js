@@ -3,7 +3,7 @@ const fs = require('fs')
 
 const client = new Client()
 
-client.on('ready', () => {
+/*client.on('ready', () => {
   copyFiles(
     'PROGMOD',
     '/hd0a/4600-109395/SYSPAR/4600-109395_BACKUP_2022-01-28/RAPID/TASK1/'
@@ -12,7 +12,7 @@ client.on('ready', () => {
     'SYSMOD',
     '/hd0a/4600-109395/SYSPAR/4600-109395_BACKUP_2022-01-28/RAPID/TASK1/'
   )
-})
+})*/
 
 client.connect({
   host: '192.168.2.31',

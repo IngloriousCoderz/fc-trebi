@@ -9,6 +9,7 @@ const cors = require('cors')
 //var usersRouter = require('./routes/users')
 //const tasksRouter = require('./routes/tasks')
 const robotRouter = require('./routes/robot')
+const siemensRouter = require('./routes/siemens')
 
 var app = express()
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //app.use('/users', usersRouter)
 //app.use('/tasks', tasksRouter)
 app.use('/robot', robotRouter)
+app.use('/siemens', siemensRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
